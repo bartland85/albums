@@ -94,6 +94,56 @@ class AlbumControllerTest extends AbstractHttpControllerTestCase
 
     public function testGetRequestToAddActionShowsEmptyForm()
     {
+        $this->dispatch('/album/add', 'GET');
+        $this->assertResponseStatusCode(200);
+        $this->assertQueryCount('form[name="album"]', 1);
+        $this->assertQueryCount('input[name="title"]', 1);
+        $this->assertQueryCount('input[name="artist"]', 1);
+        $this->assertQueryCount('input[name="submit"]', 1);
 
     }
+
+    /**
+     * @dataProvider emptyFormData
+     */
+
+    public function testCannotAddAlbumWithEmptyData($title, $artist)
+    {
+        $this->dispatch('/album/add', 'POST', ['title'=>$title, 'artist'=>$artist]);
+        $this->assertResponseStatusCode(200);
+        $this->assertQueryContentContains('li', 'Value is required and can\'t be empty');
+    }
+
+    public function emptyFormData()
+    {
+        return [
+            ['title'=>'', 'artist'=>'Test'],
+            ['title'=>'Test', 'artist'=>'']
+        ];
+    }
+
+    public function testEditActionWithNoIDRedirectsToAddForm()
+    {
+        $this->dispatch('/album/edit', 'GET');
+        $this->assertResponseStatusCode(302);
+        $this->assertResponseHeaderContains('Location' , '/album/add');
+    }
+
+    public function testDeleteActionWithNoIDRedirectsToHome()
+    {
+        $this->dispatch('/album/delete', 'GET');
+        $this->assertResponseStatusCode(302);
+        $this->assertControllerName(AlbumController::class);
+        $this->assertResponseHeaderContains('Location' , '/album');
+    }
+
+    public function testNonExistingIDInEditRouteRedirectsToHome()
+    {
+        $this->dispatch('/album/edit/180', 'GET');
+        $this->assertResponseStatusCode(302);
+        $this->assertControllerName(AlbumController::class);
+        $this->assertResponseHeaderContains('Location' , '/album');
+    }
+
+
 }
