@@ -20,8 +20,8 @@ $this->headTitle($title);
             <td><?= $this->escapeHtml($album->title) ?></td>
             <td><?= $this->escapeHtml($album->artist) ?></td>
             <td>
-                <a href="<?= $this->url('album', ['action' => 'edit', 'id' => $album->id]) ?>">Edit</a>
-                <a href="<?= $this->url('album', ['action' => 'delete', 'id' => $album->id]) ?>">Delete</a>
+                <a href="<?= $this->url('album', ['action' => 'edit', 'id' => $album->id]) ?>" id="edit_link_<?= $album->id ?>">Edit</a>
+                <a href="<?= $this->url('album', ['action' => 'delete', 'id' => $album->id]) ?>" id="del_link_<?= $album->id ?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>

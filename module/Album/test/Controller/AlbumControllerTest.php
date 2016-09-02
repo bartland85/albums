@@ -144,6 +144,4 @@ class AlbumControllerTest extends AbstractHttpControllerTestCase
         $this->assertControllerName(AlbumController::class);
         $this->assertResponseHeaderContains('Location' , '/album');
     }
-
-
 }

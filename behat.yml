@@ -1,0 +1,7 @@
+default:
+  suites:
+    Album:
+      paths:
+        - %paths.base%/features/album.feature
+      contexts:
+        - AlbumContext:
